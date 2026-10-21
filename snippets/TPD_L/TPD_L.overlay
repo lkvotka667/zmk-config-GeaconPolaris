@@ -1,4 +1,8 @@
 #include <dt-bindings/zmk/keys.h>
+#define POLARIS_TPD_L 1
+#ifdef POLARIS_LED4
+#error "TPD_L and led4 both use P1.14"
+#endif
 #include <dt-bindings/zmk/pointing.h>
 
 / {

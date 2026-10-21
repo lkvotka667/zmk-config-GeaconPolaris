@@ -42,6 +42,42 @@ include:
     snippet: IQS zmk-usb-logging cdc-debug-boot
     artifact-name: Polaris_R_MODULE_IQS
 
+# Optional four-LED OLED replacement (TPD_L conflicts on P1.14).
+  - board: xiao_ble//zmk
+    shield: Polaris_L_Base rgbled_adapter
+    snippet: LPPS studio-rpc-usb-uart cdc-boot led4
+    artifact-name: Polaris_L_MODULE_LPPS_LED4
+
+  - board: xiao_ble//zmk
+    shield: Polaris_L_Base rgbled_adapter
+    snippet: TB_L studio-rpc-usb-uart cdc-boot led4
+    artifact-name: Polaris_L_MODULE_TB_LED4
+
+  - board: xiao_ble//zmk
+    shield: Polaris_L_Base rgbled_adapter
+    snippet: JOY battery-voltage-divider-oversampling studio-rpc-usb-uart cdc-boot led4
+    artifact-name: Polaris_L_MODULE_JOY_LED4
+
+  - board: xiao_ble//zmk
+    shield: Polaris_L_Base rgbled_adapter
+    snippet: ENC studio-rpc-usb-uart cdc-boot led4
+    artifact-name: Polaris_L_MODULE_ENC_LED4
+
+  - board: xiao_ble//zmk
+    shield: Polaris_R_Base rgbled_adapter
+    snippet: TB_R zmk-usb-logging cdc-debug-boot led4
+    artifact-name: Polaris_R_MODULE_TB_LED4
+
+  - board: xiao_ble//zmk
+    shield: Polaris_R_Base rgbled_adapter
+    snippet: TPD_R zmk-usb-logging cdc-debug-boot led4
+    artifact-name: Polaris_R_MODULE_TPD_LED4
+
+  - board: xiao_ble//zmk
+    shield: Polaris_R_Base rgbled_adapter
+    snippet: IQS zmk-usb-logging cdc-debug-boot led4
+    artifact-name: Polaris_R_MODULE_IQS_LED4
+
 # Settings Reset
   - board: xiao_ble//zmk
     shield: settings_reset

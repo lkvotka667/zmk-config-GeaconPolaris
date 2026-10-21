@@ -9,6 +9,14 @@ manifest:
     - name: ShiniNet
       url-base: https://github.com/ShiniNet
   projects:
+    - name: zmk-driver-animation
+      remote: cormoran
+      revision: fa0479ec3b2fe04a96d9244e620d3c5dd2cfb280
+      path: modules/zmk-driver-animation
+    - name: zmk-driver-ext-power-transient
+      remote: cormoran
+      revision: 92b00e3acb438df77c374a2f79857a8406c41bed
+      path: modules/zmk-driver-ext-power-transient
     - name: zmk
       remote: cormoran
       revision: e5c9b6915b56801193e359dd9bad4a167ce0d1b8

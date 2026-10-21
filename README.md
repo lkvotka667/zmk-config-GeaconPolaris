@@ -1,5 +1,7 @@
 # GeaconPolaris
 
+OLED交換用4連LEDオプション（専用ブランチ）: [配線・ファーム選択・消灯操作](docs/led4-option.md)
+
 [![Build Health](badges/build-health/zmk-config-GeaconPolaris/main/build-health.svg)](https://github.com/te9no/zmk-config-GeaconPolaris/actions/workflows/build.yml?query=branch%3Amain)
 
 > [!IMPORTANT]
