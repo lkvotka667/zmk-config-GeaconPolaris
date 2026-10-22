@@ -1,0 +1,2 @@
+description: Left-only four-pixel rainbow, split connection and battery status flow
+compatible: "te9no,polaris-led4-status"

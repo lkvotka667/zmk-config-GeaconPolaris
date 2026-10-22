@@ -29,62 +29,20 @@
 	};
 
 	animations {
-		/omit-if-no-ref/ animation_control: control {
-			compatible = "zmk,animation-control";
-			label = "ANIMATION_CTRL_0";
-			powered-animations = <&endpoint_status_animation &rainbow_animation>;
-			battery-animations = <&empty_animation>;
-			behavior-animations = <&battery_status_animation &endpoint_status_animation &animation_layer_status>;
-			init-animation = <&init_animation>;
-			activation-animation = <&battery_status_animation>;
-			activation-animation-duration-ms = <1000>;
-			ext-power = <&led_power>;
-		};
-		/omit-if-no-ref/ init_animation: init {
-			compatible = "zmk,animation-compose";
-			animations = <&battery_status_animation &black_animation &endpoint_status_animation>;
-			durations-ms = <1000 200 1000>;
-		};
-		/omit-if-no-ref/ black_animation: black {
-			compatible = "zmk,animation-solid";
-			pixels = <0 1 2 3>;
-			colors = <HSL(0, 0, 0)>;
-		};
-
-		/omit-if-no-ref/ empty_animation: empty {
-			compatible = "zmk,animation-empty";
-			status = "okay";
-		};
-		/omit-if-no-ref/ rainbow_animation: rainbow {
-			compatible = "zmk,animation-solid";
-			status = "okay";
-			pixels = <0 1 2 3>;
-			colors = <HSL(0, 100, 50) HSL(60, 100, 50) HSL(120, 100, 50) HSL(180, 100, 50) HSL(240, 100, 50) HSL(300, 100, 50)>;
-		};
-		/omit-if-no-ref/ red_animation: red {
-			compatible = "zmk,animation-solid";
-			status = "okay";
-			pixels = <0 1 2 3>;
-			colors = <HSL(0, 100, 50)>;
-		};
-		/omit-if-no-ref/ endpoint_status_animation: endpoint_status {
-			compatible = "zmk,animation-endpoint";
-			status = "okay";
-			pixels = <0 1 2 3>;
-			color-open = <HSL(60, 100, 50)>;
-			color-connected = <HSL(240, 100, 50)>;
-			color-disconnected = <HSL(0, 100, 50)>;
-			color-usb = <HSL(120, 100, 25)>;
-		};
-		/omit-if-no-ref/ battery_status_animation: battery_status {
-			compatible = "zmk,animation-battery-status";
-			status = "okay";
-			pixels = <0 1 2 3>;
-			color-high = <HSL(120, 100, 50)>;// green
-			color-middle = <HSL(60, 100, 50)>;// yellow
-			color-low = <HSL(0, 100, 50)>;// red
-		};
-	};
+        animation_control: control {
+            compatible = "zmk,animation-control";
+            label = "POLARIS_LED4_STATUS";
+            powered-animations = <&polaris_status>;
+            battery-animations = <&polaris_status>;
+            behavior-animations = <&polaris_status>;
+            default-powered-brightness = <5>;
+            default-battery-brightness = <5>;
+            ext-power = <&led_power>;
+        };
+        polaris_status: polaris_status {
+            compatible = "te9no,polaris-led4-status";
+        };
+    };
 
 	led_power:led_power {
 		compatible = "zmk,ext-power-transient";
@@ -133,22 +91,13 @@
 	};
 };
 
-&animation_layer_status {
-	pixels = <0 1 2 3>;
-	default-color = <HSL(240, 100, 50)>;
-	// Polaris: DEF, FUNC, NUM, SNIPE, BT, SCROLL, SSNIPE
-	colors = <
-		0
-		HSL(193, 100, 47)
-		HSL(0, 100, 40)
-		HSL(0, 100, 100)
-		HSL(29, 88, 51)
-		HSL(120, 100, 40)
-		HSL(280, 100, 40)
-	>;
-};
 
 /* The connector cannot serve I2C OLED and LED simultaneously. */
+/* Required by the pinned driver's unconditional compilation; not in the flow. */
+&animation_layer_status {
+    pixels = <0 1 2 3>;
+    colors = <0>;
+};
 / { chosen { /delete-property/ zephyr,display; }; };
 &i2c1 {
     status = "disabled";

@@ -1,5 +1,7 @@
 import pathlib
 import os
+import subprocess
+import tempfile
 import unittest
 import yaml
 
@@ -7,6 +9,13 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]
 
 
 class Led4Tests(unittest.TestCase):
+    def test_palette_and_sequence(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            exe = str(pathlib.Path(tmp) / 'palette')
+            subprocess.run(['cc', '-Wall', '-Wextra', '-Werror',
+                            str(ROOT / 'tests/test_led4_palette.c'), '-o', exe], check=True)
+            subprocess.run([exe], check=True)
+
     @unittest.skipUnless(os.environ.get('LED4_BUILD_ROOT'), 'build tree not supplied')
     def test_generated_dts_and_firmware(self):
         build = pathlib.Path(os.environ['LED4_BUILD_ROOT'])
@@ -25,16 +34,18 @@ class Led4Tests(unittest.TestCase):
                 self.assertIn('chain-length = < 0x4 >', dts)
                 self.assertRegex(dts, r'i2c1:[^{]+\{[^}]+status = "disabled"')
                 self.assertIn('CONFIG_ZMK_ANIMATION=y', conf)
+                self.assertIn('CONFIG_POLARIS_LED4_STATUS=y', conf)
                 self.assertIn('CONFIG_ZMK_DRIVER_EXT_POWER_TRANSIENT=y', conf)
                 self.assertNotIn('CONFIG_ZMK_DISPLAY=y', conf)
 
     def test_matrix_preserves_oled_and_separates_artifacts(self):
         rows = yaml.safe_load((ROOT / 'build.yaml').read_text())['include']
         leds = [r for r in rows if 'led4' in r.get('snippet', '').split()]
-        self.assertEqual(len(leds), 7)
+        self.assertEqual(len(leds), 4)
         names = [r['artifact-name'] for r in rows if 'artifact-name' in r]
         self.assertEqual(len(names), len(set(names)))
         for row in leds:
+            self.assertIn('Polaris_L_Base', row['shield'])
             self.assertNotIn('nice_oled', row['shield'])
             self.assertNotIn('TPD_L', row['snippet'])
             self.assertTrue(row['artifact-name'].endswith('_LED4'))
@@ -49,6 +60,9 @@ class Led4Tests(unittest.TestCase):
         self.assertIn('ext-power = <&led_power>', overlay)
         self.assertIn('/delete-property/ zephyr,display', overlay)
         self.assertIn('#ifdef POLARIS_TPD_L', overlay)
+        self.assertIn('powered-animations = <&polaris_status>', overlay)
+        self.assertIn('battery-animations = <&polaris_status>', overlay)
+        self.assertNotIn('activation-animation =', overlay)
         tpd = (ROOT / 'snippets/TPD_L/TPD_L.overlay').read_text()
         self.assertIn('#ifdef POLARIS_LED4', tpd)
 

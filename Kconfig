@@ -1,0 +1,4 @@
+config POLARIS_LED4_STATUS
+    bool "Polaris left four-LED split status flow"
+    depends on ZMK_ANIMATION && ZMK_SPLIT_ROLE_CENTRAL
+    depends on ZMK_SPLIT_BLE_CENTRAL_BATTERY_LEVEL_FETCHING
